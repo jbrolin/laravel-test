@@ -1,9 +1,9 @@
-<!doctype html>
-<title>My Blog</title>
-<link rel="stylesheet" href="/app.css">
-<body>
+<x-layout>
     <article>
-        <?= $post; ?>
+        <h1>{{ $post->title }}</h1>
     </article>
+    <div>
+        {!! $post->body !!}
+    </div>
     <a href="/">Back</a>
-</body>
+</x-layout>
