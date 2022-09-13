@@ -17,8 +17,15 @@ class Post extends Model
     // do not allow mass assignment (best approach)
     protected $guarded = [];
 
+    protected $with = ['category', 'author'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function author() //renamed to author and passing in user_id as foreign key
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -1,8 +1,14 @@
 <?php
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+
+/*
+ * @method static \Illuminate\Database\Query\Builder|\App\MyModelName where($field, $value)
+ */
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +22,8 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 Route::get('/', function () {
    return view('posts', [
-        'posts' => Post::all()
+        // return the all posts from category with out db query for each post (the n+1 select problem)
+        'posts' => Post::latest('updated_at')->with('category', 'author')->get()
    ]);
 });
 
@@ -29,6 +36,12 @@ Route::get('posts/{post:slug}', function(Post $post) {
 Route::get('categories/{category:slug}', function(Category $category) {
     return view('posts', [
         'posts' => $category->posts
+    ]);
+});
+
+Route::get('authors/{author:userName}', function(User $author) {
+    return view('posts', [
+        'posts' => $author->posts
     ]);
 });
 
